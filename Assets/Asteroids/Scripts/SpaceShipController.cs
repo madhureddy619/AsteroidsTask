@@ -35,8 +35,6 @@ public class SpaceShipController : MonoBehaviour
         }
         turnInput = Input.GetAxis("Horizontal");
         thrustInput = Mathf.Clamp01(Input.GetAxis("Vertical")); //set value between 0 to 1
-
-        
     }
 
     void FixedUpdate()
@@ -44,8 +42,6 @@ public class SpaceShipController : MonoBehaviour
         Move();
         Turn();
         Speed();
-       
-
     }
 
     void Move()
