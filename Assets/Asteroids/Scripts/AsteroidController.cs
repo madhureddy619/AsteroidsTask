@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class AsteroidController : MonoBehaviour
 {
+    public enum asteroidType { Large , Medium , Small }
     [Header("Asteroid control")]
     public float initialForce = 100f;
     public float initialTorque = 100f;
+
+    [Header("Select Size")]
+    public asteroidType sizeType;
 
     Rigidbody rb_asteroid;
 
@@ -19,7 +23,9 @@ public class AsteroidController : MonoBehaviour
             SetRandomForce(rb_asteroid, initialForce);
             SetRandomTorque(rb_asteroid, initialTorque);
         }
-        transform.position = FindOpenPosition();
+
+        if(sizeType == asteroidType.Large)
+            transform.position = FindOpenPosition();
     }
 
    
@@ -59,7 +65,25 @@ public class AsteroidController : MonoBehaviour
         if (otherCollider.gameObject.tag == "Bullet")
         {
             Destroy(this.gameObject, 0f);
-            Destroy(otherCollider.gameObject);
+
+            switch (sizeType)
+            {
+                case asteroidType.Large:
+                    GameManager.GenerateAsteroids(GameManager.instance.asteroid_medium, 2,this.transform.position);
+                    break;
+                case asteroidType.Medium:
+                    GameManager.GenerateAsteroids(GameManager.instance.asteroid_small, 2, this.transform.position);
+                    break;
+                case asteroidType.Small:
+                    Debug.Log("*************** Add Score here ***************8");
+                    break;
+                default:
+                    Debug.LogError("## Pleas assign type of asteroid - SMALL or MEDIUM or LARGE ###");
+                    break;
+            }
+
+            
+            Destroy(otherCollider.gameObject); // Destroy bullet
         }
     }
     void OnCollisionEnter(Collision otherCollision)

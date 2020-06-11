@@ -141,7 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b952fef38c41f4a85de97d539d51ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asteroid: {fileID: 5701154677084962412, guid: cf4a336c1eea8824d9cafcdf3f93d24b,
+  asteroid_large: {fileID: 5701154677084962412, guid: cf4a336c1eea8824d9cafcdf3f93d24b,
+    type: 3}
+  asteroid_medium: {fileID: 5701154677084962412, guid: afea0fe9d15f8d349a55a6e4154f082c,
+    type: 3}
+  asteroid_small: {fileID: 5701154677084962412, guid: 3cddb3e723bc02e46aa4d75005c9ee91,
     type: 3}
 --- !u!4 &74419355
 Transform:

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public int speed = 800;
     void Start()
     {
-        GetComponent<Rigidbody>().AddForce(transform.up * 350);
+        GetComponent<Rigidbody>().AddForce(transform.up * speed);
     }
 
     

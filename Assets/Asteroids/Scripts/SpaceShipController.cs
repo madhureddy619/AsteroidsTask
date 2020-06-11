@@ -70,7 +70,7 @@ public class SpaceShipController : MonoBehaviour
         GameObject bulletClone = Instantiate(bullet, new Vector2(nozzule.transform.position.x, nozzule.transform.position.y), transform.rotation);
         
         bulletClone.GetComponent<Bullet>().RemoveBullet(3f);
-        bulletClone.GetComponent<Rigidbody>().AddForce(transform.up * 350);
+      //  bulletClone.GetComponent<Rigidbody>().AddForce(transform.up * 350);
     }
 }
 
