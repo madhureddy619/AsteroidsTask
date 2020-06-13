@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameState { IS_PLAYING , PAUSED , UI_MENU ,INTRUCTIONS,GAME_OVER, NONE }
     public static GameManager instance;
+
+    [Header("")]
+    public GameState presentState = GameState.UI_MENU; // this is a default state.
 
     [Header("Type of Asteroids")]
     public GameObject asteroid_large;
     public GameObject asteroid_medium;
     public GameObject asteroid_small;
 
-
+   
     void Awake()
     {
         if (instance == null)
@@ -24,8 +28,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             throw new SingletonException("Only one instance is allowed");
         }
-
     }
+
     void Start()
     {
         GenerateAsteroids(asteroid_large,5);

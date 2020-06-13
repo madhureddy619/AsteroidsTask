@@ -32,11 +32,11 @@ public class ScreenControl : MonoBehaviour
         {
             transform.position = new Vector2(sceneRightEdge, transform.position.y);
         }
-        if (transform.position.y > sceneTopEdge)
+        if (transform.position.y > sceneTopEdge+2)
         {
             transform.position = new Vector2(transform.position.x, sceneBottomEdge);
         }
-        if (transform.position.y < sceneBottomEdge)
+        if (transform.position.y < sceneBottomEdge-1)
         {
             transform.position = new Vector2(transform.position.x, sceneTopEdge);
         }
