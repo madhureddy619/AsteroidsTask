@@ -12,6 +12,9 @@ public class AsteroidController : MonoBehaviour
     [Header("Select Size")]
     public asteroidType sizeType;
 
+    [Header("")]
+    public ParticleSystem exposive;
+
     Rigidbody rb_asteroid;
 
     // Start is called before the first frame update
@@ -69,18 +72,23 @@ public class AsteroidController : MonoBehaviour
             switch (sizeType)
             {
                 case asteroidType.Large:
-                    GameManager.GenerateAsteroids(GameManager.instance.asteroid_medium, 2,this.transform.position);
+
+                    GameManager.instance.GenerateAsteroids(GameManager.instance.asteroid_medium, 2,this.transform.position);
+                    GameManager.score++;
                     break;
                 case asteroidType.Medium:
-                    GameManager.GenerateAsteroids(GameManager.instance.asteroid_small, 2, this.transform.position);
+                    GameManager.instance.GenerateAsteroids(GameManager.instance.asteroid_small, 2, this.transform.position);
+                    GameManager.score++;
                     break;
                 case asteroidType.Small:
                     Debug.Log("*************** Add Score here ***************8");
+                    GameManager.score++;
                     break;
                 default:
                     Debug.LogError("## Pleas assign type of asteroid - SMALL or MEDIUM or LARGE ###");
                     break;
             }
+
 
             
             Destroy(otherCollider.gameObject); // Destroy bullet
@@ -90,7 +98,7 @@ public class AsteroidController : MonoBehaviour
     {
         if (otherCollision.gameObject.tag == "Ship")
         {
-            print("Collided with Ship");
+            GameManager.instance.GameOver();
         }
     }
 

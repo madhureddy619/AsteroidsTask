@@ -29,12 +29,15 @@ public class SpaceShipController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("space"))
+        if (GameManager.instance.presentState == GameManager.GameState.IS_PLAYING)
         {
-            Shoot();
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("space"))
+            {
+                Shoot();
+            }
+            turnInput = Input.GetAxis("Horizontal");
+            thrustInput = Mathf.Clamp01(Input.GetAxis("Vertical")); //set value between 0 to 1
         }
-        turnInput = Input.GetAxis("Horizontal");
-        thrustInput = Mathf.Clamp01(Input.GetAxis("Vertical")); //set value between 0 to 1
     }
 
     void FixedUpdate()
