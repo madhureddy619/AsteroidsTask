@@ -17,12 +17,12 @@ public class ScreenControl : MonoBehaviour
     void SetSpacePosition()
     {
         float sceneWidth = screenCam.orthographicSize * 2 * screenCam.aspect;
-        float sceneHeight = screenCam.orthographicSize * 2;
+        float sceneHeight = screenCam.orthographicSize * 2 ;
 
         float sceneRightEdge = sceneWidth / 2;
         float sceneLeftEdge = sceneRightEdge * -1;
-        float sceneTopEdge = sceneHeight / 2 ;
-        float sceneBottomEdge = sceneTopEdge * -1 ;
+        float sceneTopEdge = (sceneHeight / 2) + 1f;
+        float sceneBottomEdge = (sceneTopEdge * -1) +1.9f;
 
         if (transform.position.x > sceneRightEdge)
         {
@@ -32,11 +32,11 @@ public class ScreenControl : MonoBehaviour
         {
             transform.position = new Vector2(sceneRightEdge, transform.position.y);
         }
-        if (transform.position.y > sceneTopEdge+2)
+        if (transform.position.y > sceneTopEdge)
         {
             transform.position = new Vector2(transform.position.x, sceneBottomEdge);
         }
-        if (transform.position.y < sceneBottomEdge-1)
+        if (transform.position.y < sceneBottomEdge)
         {
             transform.position = new Vector2(transform.position.x, sceneTopEdge);
         }

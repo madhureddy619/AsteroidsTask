@@ -13,7 +13,7 @@ public class AsteroidController : MonoBehaviour
     public asteroidType sizeType;
 
     [Header("")]
-    public ParticleSystem exposive;
+    public GameObject explosion;
 
     Rigidbody rb_asteroid;
 
@@ -81,19 +81,6 @@ public class AsteroidController : MonoBehaviour
                     break;
                 case asteroidType.Small:
                     GameManager.instance.score+=30;
-/*
-                    float rand = Random.value;
-                    if (rand >= 0.3f)
-                    {
-                        GameManager.instance.GenerateAsteroids("Large", 1,
-                            new Vector3(
-                                Random.Range
-                    (Camera.main.ScreenToWorldPoint(new Vector2(0, 0)).y, Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height)).y),
-                                Random.Range
-                    (Camera.main.ScreenToWorldPoint(new Vector2(0, 0)).x, Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0)).x),
-                                transform.position.z));
-                    }
-                    */
                     break;
                 default:
                     Debug.LogError("## Pleas assign type of asteroid - SMALL or MEDIUM or LARGE ###");
@@ -105,7 +92,11 @@ public class AsteroidController : MonoBehaviour
             GameManager.instance.PUM.SpawnRandomPower(transform);
 
             if(otherCollider.gameObject.tag == "Bullet")
-            Destroy(otherCollider.gameObject); // Destroy bullet
+                Destroy(otherCollider.gameObject); // Destroy bullet
+            if (explosion != null)
+            {
+                Instantiate(explosion, transform.position, transform.rotation);
+            }
         }
     }
     void OnCollisionEnter(Collision otherCollision)
@@ -115,7 +106,11 @@ public class AsteroidController : MonoBehaviour
             GameManager.instance.lives--;            
             GameManager.instance.GameOver();
             gameObject.SetActive(false);
+            if (explosion != null)
+            {
+                Instantiate(explosion, transform.position, transform.rotation);
+            }
         }
     }
-
+    
 }

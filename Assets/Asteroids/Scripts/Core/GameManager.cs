@@ -17,10 +17,13 @@ public class GameManager : MonoBehaviour
     [Tooltip("Assign UM - UIManager script")]
     public UIManager UM;
 
-    [Tooltip("Assign PM - Power up manager ref script")]
+    [Tooltip("Assign PM - PowerUpManager script")]
     public PowerUpManager PUM;
 
     [Header("Variables")]
+    public int initialwave_asteroids = 3;
+    public int waveAsteroids_frequency = 2;
+
     int Score;
     public int score
     {
@@ -32,22 +35,32 @@ public class GameManager : MonoBehaviour
             CheckCurrentStage();
         }
     }
+
     int Waves;
     public int waves
     {
         get { return Waves; }
         set {
             Waves = value; SetHUDValues();
-            stageText.text = "Stage "+waves.ToString();
+            UM.hud_stageText.text = "Stage "+waves.ToString();
            // CheckCurrentStage();
         }
     }
+
     int Lives;
     public int lives
     {
         get { return Lives; }
-        set { Lives = value; UM.SetLivesUI(lives); }
+        set
+        {
+            if (lives > 3)
+                lives = 3;
+
+            Lives = value;
+            UM.SetLivesUI(lives);
+        }
     }
+
 
     [Header("Type of Asteroids")]
     public GameObject asteroid_large;
@@ -56,17 +69,14 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Field Data")]
     public GameObject spaceShip_pc;
-    public GameObject asteroidsParent;
+    public GameObject playerExplosion;
+
     [Header("")]
     public GameObject gameFiledObj;
 
     public ObjectPool astPoolLarge;
     public ObjectPool astPoolMedium;
     public ObjectPool astPoolSmall;
-
-    [Header("Stage Objects")]
-    public Text stageText;
-    public Animator animBanner;
 
     void Awake()
     {
@@ -93,14 +103,22 @@ public class GameManager : MonoBehaviour
     }
 
 
-    void CheckCurrentStage()
+    public void CheckCurrentStage()
     {       
-        if (IsAllAsteroidsDisabled() && score > 0)//(score != 0 && (score % 100 == 0))
+        if (IsAllAsteroidsDisabled() && score > 0 && presentState ==  GameState.IS_PLAYING)
         {
             waves++;
-            animBanner.Play("bannerClip", 0, 0f);
-            GenerateAsteroids(AsteroidController.asteroidType.Large, 5);
+            
+            UM.animBanner.Play("bannerClip", 0, 0f);
+            StartCoroutine(GenerateWithDalay(2f));
+            
         }  
+    }
+    IEnumerator GenerateWithDalay(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        GenerateAsteroids(AsteroidController.asteroidType.Large, initialwave_asteroids + (waves * waveAsteroids_frequency));
+        yield return null;
     }
 
     void SetHUDValues()
@@ -185,7 +203,7 @@ public class GameManager : MonoBehaviour
         waves = 1;
         lives = 3;
         spaceShip_pc.SetActive(true);
-        GenerateAsteroids(AsteroidController.asteroidType.Large, 5);
+        GenerateAsteroids(AsteroidController.asteroidType.Large, initialwave_asteroids);
         presentState = GameState.IS_PLAYING;
 
     }
@@ -229,7 +247,7 @@ public class GameManager : MonoBehaviour
     {
         ResetGame();
         gameFiledObj.SetActive(true);
-        GenerateAsteroids(AsteroidController.asteroidType.Large, 5);
+        GenerateAsteroids(AsteroidController.asteroidType.Large, initialwave_asteroids);
         presentState = GameState.IS_PLAYING;
     }
 
@@ -240,8 +258,14 @@ public class GameManager : MonoBehaviour
             UM.ButtonClick("GAME_OVER");
             SoundManager.instance.PlayClip(EAudioClip.FAILURE_SFX, 1);
             spaceShip_pc.SetActive(false);
+            Instantiate(playerExplosion, spaceShip_pc.transform.position, spaceShip_pc.transform.rotation);
+
             ResetGame();
             presentState = GameState.GAME_OVER;
+        }
+        else
+        {
+            CheckCurrentStage();
         }
     }
 

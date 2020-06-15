@@ -16,7 +16,7 @@ public class PowerUpManager : MonoBehaviour
 
     public void SpawnRandomPower(Transform Pos)
     {
-        if (powerUpCounter >= Random.Range(5, 15))
+        if (powerUpCounter >= Random.Range(12, 18))
         {
             int rand = Random.Range(0,powerUpPrefs.Length);        
             Instantiate(powerUpPrefs[rand], Pos.position,Quaternion.identity);
@@ -39,8 +39,8 @@ public class PowerUpManager : MonoBehaviour
                 isThreeShot = true;
                 break;            
             case PowerType.LIFE:
-                if(GameManager.instance.lives<=2)
-                GameManager.instance.lives++;
+                if(GameManager.instance.lives <= 3)
+                    GameManager.instance.lives++;
                 break;
             case PowerType.SHIELD:
                 currType = type;

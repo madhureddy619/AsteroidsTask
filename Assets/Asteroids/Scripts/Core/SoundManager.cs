@@ -67,6 +67,7 @@ public enum EAudioClip
     FAILURE_SFX,
     DESTROY_SFX,
     BULLET_SFX,
+    POWER_SFX
 
 }
 

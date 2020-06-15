@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     [Header("")]
     public Text hud_score;
     public Text hud_waves;
+    public Text hud_stageText;
+    public Animator animBanner;
 
     [Header("")]
     public Text gameover_score;
@@ -47,7 +49,7 @@ public class UIManager : MonoBehaviour
                 ui_mainMenu.SetActive(true);
 
                 menu_HighScore.text = "High Score : " + PlayerPrefsManager.higeScore(GameManager.instance.score).ToString();
-                menu_maxWaves.text = "Higest Wave : " +PlayerPrefsManager.maxWaves(GameManager.instance.waves).ToString();
+                menu_maxWaves.text = "Higest Wave : " + PlayerPrefsManager.maxWaves(GameManager.instance.waves).ToString();
 
                 GameManager.instance.presentState = GameManager.GameState.UI_MENU;
                 break;
@@ -58,16 +60,16 @@ public class UIManager : MonoBehaviour
             case "START":
                 ui_hud.SetActive(true);
                 GameManager.instance.StartGame();
-                
+
                 break;
             case "GAME_OVER":
                 ui_gameOver.SetActive(true);
-              
-                gameover_score.text = "Score : "+GameManager.instance.score.ToString();
-                gameover_waves.text = "Waves : "+GameManager.instance.waves.ToString();
 
-                gameover_highscore.text = "High Score : "+PlayerPrefsManager.higeScore(GameManager.instance.score).ToString();
-                gameover_maxwaves.text = "Higest Wave : "+PlayerPrefsManager.maxWaves(GameManager.instance.waves).ToString();
+                gameover_score.text = "Score : " + GameManager.instance.score.ToString();
+                gameover_waves.text = "Waves : " + GameManager.instance.waves.ToString();
+
+                gameover_highscore.text = "High Score : " + PlayerPrefsManager.higeScore(GameManager.instance.score).ToString();
+                gameover_maxwaves.text = "Higest Wave : " + PlayerPrefsManager.maxWaves(GameManager.instance.waves).ToString();
 
                 break;
             case "PAUSE":
@@ -86,7 +88,7 @@ public class UIManager : MonoBehaviour
                 GameManager.instance.ResumeGame();
                 break;
             default:
-                Debug.Log("########## Please assign correct name of buttonc ############");
+                Debug.Log("########## Please assign correct name of button ############");
                 break;
         }
     }
@@ -95,18 +97,17 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region public methods
-    public void SetLivesUI(int x)
+    public void SetLivesUI(int count)
     {
-        if (x>=0 && x < 3)
+        if (count < 4)
         {
-            for(int i =0;i<livesUI.Length;++i)
+            for (int i = 0; i < livesUI.Length; i++)
             {
-                if(i>x-1)
-                    livesUI[i].SetActive(false);
-                else
+                if (i < count)
                     livesUI[i].SetActive(true);
+                else
+                    livesUI[i].SetActive(false);
             }
-            
         }
     }
     public void ResetLivesUI()

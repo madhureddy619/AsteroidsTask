@@ -65,6 +65,7 @@ MonoBehaviour:
   initialForce: 50
   initialTorque: 100
   sizeType: 0
+  explosion: {fileID: 100004, guid: 2857e183f4cd3df4e9096e5b578bd32f, type: 3}
 --- !u!114 &4197091740837167416
 MonoBehaviour:
   m_ObjectHideFlags: 0

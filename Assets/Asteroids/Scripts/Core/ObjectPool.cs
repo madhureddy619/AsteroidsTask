@@ -9,7 +9,7 @@ public class ObjectPool : MonoBehaviour {
 
     List<GameObject> pObjects;
 
-    private void Start()
+    void Start()
     {
         pObjects = new List<GameObject>();
         for (int i = 0; i < Pamount; ++i)

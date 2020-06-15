@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Powerup : MonoBehaviour
 {
-    [Range(5, 30)]
+   [Header("Power Controlls")]
     public int showTime = 10;
-
-    [Range(5, 30)]
     public int powerDuration = 10;
 
     [SerializeField]
@@ -18,9 +16,14 @@ public class Powerup : MonoBehaviour
 
     public PowerType type;
 
+    bool isactivated;
+
     void Start()
     {
         ApplySpawnVariance();
+        isactivated = false;
+        StartCoroutine(DestroyPower(showTime));
+       // Destroy(this.gameObject, showTime);
     }
 
    
@@ -33,16 +36,13 @@ public class Powerup : MonoBehaviour
         }
     }
 
-    public  void GrantPower()
+    public void GrantPower()
     {
         GameManager.instance.PUM.ActivatePower(type);
-        HidePower();  
-    }
-
-    public void HidePower()
-    {
-        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
         gameObject.GetComponent<Collider>().enabled = false;
+        isactivated = true;
+        SoundManager.instance.PlayClip(EAudioClip.POWER_SFX, 1);
         StartCoroutine(PowerUpUsed());
     }
 
@@ -70,7 +70,12 @@ public class Powerup : MonoBehaviour
             rb.AddTorque(randomTorque);
         }
     }
-
+    IEnumerator DestroyPower(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        if (!isactivated)
+            Destroy(this.gameObject);
+    }
 }
 
 public enum PowerType
