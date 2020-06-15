@@ -11,7 +11,7 @@ public class SpaceShipController : MonoBehaviour
     [Header("Bullet data")]
     public GameObject bullet;
     public Transform nozzule;
-
+    public Transform[] treeShotDir;
     Rigidbody rb_ship;
     float thrustInput;
     float turnInput;
@@ -70,10 +70,33 @@ public class SpaceShipController : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bulletClone = Instantiate(bullet, new Vector2(nozzule.transform.position.x, nozzule.transform.position.y), transform.rotation);
-        
-        bulletClone.GetComponent<Bullet>().RemoveBullet(3f);
+        if (!GameManager.instance.PUM.isThreeShot)
+        {
+            GameObject bulletClone = Instantiate(bullet, new Vector2(nozzule.transform.position.x, nozzule.transform.position.y), transform.rotation);
+
+            bulletClone.GetComponent<Bullet>().RemoveBullet(3f);
+            SoundManager.instance.PlayClip(EAudioClip.BULLET_SFX,0.8f);
+        }
+        else
+        {
+            ShootSpread();
+        }
+
       //  bulletClone.GetComponent<Rigidbody>().AddForce(transform.up * 350);
+    }
+
+    void ShootSpread()
+    {
+        for (int i = 0; i <3; i++)
+        {
+           
+            Vector3 direction = treeShotDir[i].up;
+            GameManager.instance.PUM.dir = transform.up;
+            GameObject bulletClone = Instantiate(bullet, new Vector3(treeShotDir[i].transform.position.x, treeShotDir[i].transform.position.y, treeShotDir[i].position.z),transform.rotation);
+            SoundManager.instance.PlayClip(EAudioClip.BULLET_SFX, 0.8f);
+            bulletClone.GetComponent<Bullet>().RemoveBullet(3f);
+        }
+
     }
 }
 

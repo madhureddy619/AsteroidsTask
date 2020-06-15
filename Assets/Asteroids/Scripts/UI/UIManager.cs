@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     [Header("Text Objects")]
     public Text menu_HighScore;
     public Text menu_maxWaves;
+    [Header("Lives UI")]
+    public GameObject[] livesUI;
 
     [Header("")]
     public Text hud_score;
@@ -44,8 +46,8 @@ public class UIManager : MonoBehaviour
             case "MAIN_MENU":
                 ui_mainMenu.SetActive(true);
 
-                menu_HighScore.text = "High Score : " + PlayerPrefsManager.higeScore(GameManager.score).ToString();
-                menu_maxWaves.text = "Higest Wave : " +PlayerPrefsManager.maxWaves(GameManager.waves).ToString();
+                menu_HighScore.text = "High Score : " + PlayerPrefsManager.higeScore(GameManager.instance.score).ToString();
+                menu_maxWaves.text = "Higest Wave : " +PlayerPrefsManager.maxWaves(GameManager.instance.waves).ToString();
 
                 GameManager.instance.presentState = GameManager.GameState.UI_MENU;
                 break;
@@ -60,13 +62,12 @@ public class UIManager : MonoBehaviour
                 break;
             case "GAME_OVER":
                 ui_gameOver.SetActive(true);
-
               
-                gameover_score.text = "Score : "+GameManager.score.ToString();
-                gameover_waves.text = "Waves : "+GameManager.waves.ToString();
+                gameover_score.text = "Score : "+GameManager.instance.score.ToString();
+                gameover_waves.text = "Waves : "+GameManager.instance.waves.ToString();
 
-                gameover_highscore.text = "High Score : "+PlayerPrefsManager.higeScore(GameManager.score).ToString();
-                gameover_maxwaves.text = "Higest Wave : "+PlayerPrefsManager.maxWaves(GameManager.waves).ToString();
+                gameover_highscore.text = "High Score : "+PlayerPrefsManager.higeScore(GameManager.instance.score).ToString();
+                gameover_maxwaves.text = "Higest Wave : "+PlayerPrefsManager.maxWaves(GameManager.instance.waves).ToString();
 
                 break;
             case "PAUSE":
@@ -91,10 +92,29 @@ public class UIManager : MonoBehaviour
     }
 
 
-
-
     #endregion
 
-
+    #region public methods
+    public void SetLivesUI(int x)
+    {
+        if (x>=0 && x < 3)
+        {
+            for(int i =0;i<livesUI.Length;++i)
+            {
+                if(i>x-1)
+                    livesUI[i].SetActive(false);
+                else
+                    livesUI[i].SetActive(true);
+            }
+            
+        }
+    }
+    public void ResetLivesUI()
+    {
+        livesUI[0].SetActive(true);
+        livesUI[1].SetActive(true);
+        livesUI[2].SetActive(true);
+    }
+    #endregion
 
 }
