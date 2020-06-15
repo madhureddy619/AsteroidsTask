@@ -25,15 +25,21 @@ public class GameManager : MonoBehaviour
     public int score
     {
         get { return Score; }
-        set { Score= value; SetHUDValues(); }
+        set
+        {
+            Score = value;
+            SetHUDValues();
+            CheckCurrentStage();
+        }
     }
     int Waves;
     public int waves
     {
         get { return Waves; }
-        set { Waves = value; SetHUDValues();
+        set {
+            Waves = value; SetHUDValues();
             stageText.text = "Stage "+waves.ToString();
-            CheckCurrentStage();
+           // CheckCurrentStage();
         }
     }
     int Lives;
@@ -87,51 +93,52 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void CheckCurrentStage()
+    void CheckCurrentStage()
     {       
-        if (score != 0 && (score % 100 == 0))
+        if (IsAllAsteroidsDisabled() && score > 0)//(score != 0 && (score % 100 == 0))
         {
             waves++;
             animBanner.Play("bannerClip", 0, 0f);
+            GenerateAsteroids(AsteroidController.asteroidType.Large, 5);
         }  
     }
 
-    private void SetHUDValues()
+    void SetHUDValues()
     {
         UM.hud_score.text = "Score : " + score.ToString();
         UM.hud_waves.text = "Waves : "+waves.ToString();
     }
 
-    public void GenerateAsteroids(string type, int count)
+    public void GenerateAsteroids(AsteroidController.asteroidType type, int count)
     {
         for (int i = 0; i < count; i++)
         {
             GameObject asteroidsClone = null;
             switch (type)
             {
-                case "Large":
+                case AsteroidController.asteroidType.Large:
                     asteroidsClone = astPoolLarge.GetPoolObj();break;
-                case "Medium":
+                case AsteroidController.asteroidType.Medium:
                     asteroidsClone = astPoolMedium.GetPoolObj();break;
-                case "Small":
+                case AsteroidController.asteroidType.Small:
                     asteroidsClone = astPoolSmall.GetPoolObj();break;
             }
            // asteroidsClone.transform.SetParent(asteroidsParent.transform);
             asteroidsClone.SetActive(true);
         }
     }
-    public void GenerateAsteroids(string type, int count, Vector3 pos)
+    public void GenerateAsteroids(AsteroidController.asteroidType type, int count, Vector3 pos)
     {
         for (int i = 0; i < count; i++)
         {
             GameObject asteroidsClone = null;
             switch (type)
             {
-                case "Large":
+                case AsteroidController.asteroidType.Large:
                     asteroidsClone = astPoolLarge.GetPoolObj(); break;
-                case "Medium":
+                case AsteroidController.asteroidType.Medium:
                     asteroidsClone = astPoolMedium.GetPoolObj(); break;
-                case "Small":
+                case AsteroidController.asteroidType.Small:
                     asteroidsClone = astPoolSmall.GetPoolObj(); break;
             }
             asteroidsClone.transform.position = pos;
@@ -139,6 +146,30 @@ public class GameManager : MonoBehaviour
             asteroidsClone.SetActive(true);
         }
     }
+
+    //This is use full to update waves & spawn new asteroids
+    bool IsAllAsteroidsDisabled()
+    {
+        //Check all remainig rocks are disabled or not
+        foreach (Transform child in astPoolLarge.transform)
+        {
+            if (child.gameObject.activeSelf)
+                return false;
+        }
+        foreach (Transform child in astPoolMedium.transform)
+        {
+            if (child.gameObject.activeSelf)
+                return false;
+        }
+        foreach (Transform child in astPoolSmall.transform)
+        {
+            if (child.gameObject.activeSelf)
+                return false;
+        }
+
+        return true;
+    }
+
 
 
     #region Game Cotrolling methods
@@ -154,7 +185,7 @@ public class GameManager : MonoBehaviour
         waves = 1;
         lives = 3;
         spaceShip_pc.SetActive(true);
-        GenerateAsteroids("Large", 5);
+        GenerateAsteroids(AsteroidController.asteroidType.Large, 5);
         presentState = GameState.IS_PLAYING;
 
     }
@@ -178,10 +209,18 @@ public class GameManager : MonoBehaviour
         spaceShip_pc.transform.rotation = Quaternion.identity;
         spaceShip_pc.GetComponent<Rigidbody>().isKinematic = false;
 
-        //Destroy all remainig rocks
-        foreach (Transform child in asteroidsParent.transform)
+        //disable all remainig rocks
+        foreach (Transform child in astPoolLarge.transform)
         {
-            Destroy(child.gameObject);
+            child.gameObject.SetActive(false);
+        }
+        foreach (Transform child in astPoolMedium.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        foreach (Transform child in astPoolSmall.transform)
+        {
+            child.gameObject.SetActive(false);
         }
         spaceShip_pc.SetActive(true);
     }
@@ -190,7 +229,7 @@ public class GameManager : MonoBehaviour
     {
         ResetGame();
         gameFiledObj.SetActive(true);
-        GenerateAsteroids("Large", 5);
+        GenerateAsteroids(AsteroidController.asteroidType.Large, 5);
         presentState = GameState.IS_PLAYING;
     }
 

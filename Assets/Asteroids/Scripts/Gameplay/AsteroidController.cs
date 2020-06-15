@@ -72,19 +72,16 @@ public class AsteroidController : MonoBehaviour
             switch (sizeType)
             {
                 case asteroidType.Large:
-
-                    GameManager.instance.GenerateAsteroids("Medium", 2,this.transform.position);
-                    GameManager.instance.score++;
-                    
+                    GameManager.instance.GenerateAsteroids(asteroidType.Medium, 2,this.transform.position);
+                    GameManager.instance.score+=10;
                     break;
                 case asteroidType.Medium:
-                    GameManager.instance.GenerateAsteroids("Small", 2, this.transform.position);
+                    GameManager.instance.GenerateAsteroids(asteroidType.Small, 2, this.transform.position);
                     GameManager.instance.score+=20;
-                    
                     break;
                 case asteroidType.Small:
                     GameManager.instance.score+=30;
-
+/*
                     float rand = Random.value;
                     if (rand >= 0.3f)
                     {
@@ -96,6 +93,7 @@ public class AsteroidController : MonoBehaviour
                     (Camera.main.ScreenToWorldPoint(new Vector2(0, 0)).x, Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0)).x),
                                 transform.position.z));
                     }
+                    */
                     break;
                 default:
                     Debug.LogError("## Pleas assign type of asteroid - SMALL or MEDIUM or LARGE ###");

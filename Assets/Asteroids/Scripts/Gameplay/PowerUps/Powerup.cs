@@ -18,13 +18,13 @@ public class Powerup : MonoBehaviour
 
     public PowerType type;
 
-    private void Start()
+    void Start()
     {
         ApplySpawnVariance();
     }
 
    
-    private void OnTriggerEnter(Collider otherCollision)
+    void OnTriggerEnter(Collider otherCollision)
     {
         GameObject otherObject = otherCollision.gameObject;
         if (otherObject.tag == "Ship")

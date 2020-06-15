@@ -8,7 +8,7 @@ public class PowerUpManager : MonoBehaviour
     public GameObject[] powerUpPrefs;
     public GameObject shieldObj;
 
-    [HideInInspector]public int powerUpCounter;
+    [HideInInspector] public int powerUpCounter;
     [HideInInspector] public bool isThreeShot = false;
     [HideInInspector] public Vector3 dir;
 
